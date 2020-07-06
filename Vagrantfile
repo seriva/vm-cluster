@@ -2,13 +2,14 @@
 # vi: set ft=ruby :
 
 cfg = {
-  :vm_box => "generic/ubuntu1804",  #generic/rhel7
+  :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7",
   :vm_count => 0,
   :vm_prefix => "ubu",
   :vm_cpus => 2,
   :vm_memory => 2048,
   :ssh_priv => "/path/to/ssh/private/key", 
-  :ssh_public => "/path/to/ssh/public/key"
+  :ssh_public => "/path/to/ssh/public/key",
+  :network_switch => "switchname"
 }
   
 boxes = [
@@ -47,7 +48,7 @@ end
   
 Vagrant.configure(2) do |config|
   config.vm.box = "#{cfg[:vm_box]}"
-  config.vm.network "public_network"
+  config.vm.network "public_network", bridge: "#{cfg[:network_switch]}"
 
   config.vm.provision "file", source: "#{cfg[:ssh_priv]}", destination: "/home/vagrant/.ssh/id_rsa"
   public_key = File.read("#{cfg[:ssh_public]}") 
