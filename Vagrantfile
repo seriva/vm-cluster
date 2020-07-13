@@ -2,16 +2,17 @@
 # vi: set ft=ruby :
 
 cfg = {
-  :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7",
-  :vm_count => 0,
-  :vm_prefix => "ubu",
-  :vm_cpus => 2,
-  :vm_memory => 2048,
-  :ssh_priv => "/path/to/ssh/private/key", 
-  :ssh_public => "/path/to/ssh/public/key",
-  :network_switch => "switchname"
+  :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
+  :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
+  :vm_cpus => 2, # Number of CPU cores each VM should have when using the vm_count.
+  :vm_memory => 2048, # Amount of memory each VM should have when using the vm_count.
+  :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
+  :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs
+  :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs
+  :network_switch => "switchname"  # The network switch you want to use to connect the VMs to. THis must be created in Hyper-V manager before hand and needs to be an external switch.
 }
-  
+
+# if vm_count is set to 0 the bolow config will be used to create the VMs with the specifications.
 boxes = [
   {
     :name => "Kubernetes Master", 
