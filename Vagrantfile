@@ -76,6 +76,7 @@ Vagrant.configure(2) do |config|
       m.vm.provider "hyperv" do |v|
         v.vmname = cfg[:vm_prefix] + ": " + machine[:name]
         v.memory = machine[:memory]
+        v.maxmemory = machine[:memory]
         v.cpus = machine[:cpus]
         v.linked_clone = true
         v.mac = "525400" + Array.new(6){[*"A".."F", *"0".."9"].sample}.join
