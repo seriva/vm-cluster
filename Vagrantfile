@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 cfg = {
+  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
   :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
   :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
   :vm_cpus => 2, # Number of CPU cores each VM should have when using the vm_count.
@@ -9,7 +10,7 @@ cfg = {
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
   :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs
   :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs
-  :network_switch => "switchname"  # The network switch you want to use to connect the VMs to. THis must be created in Hyper-V manager before hand and needs to be an external switch.
+  :network_switch => "switchname"  # HYPER-V ONLY. The network switch you want to use to connect the VMs to. This must be created in Hyper-V manager before hand and needs to be an external switch.
 }
 
 # if vm_count is set to 0 the bolow config will be used to create the VMs with the specifications.
@@ -49,7 +50,9 @@ end
   
 Vagrant.configure(2) do |config|
   config.vm.box = "#{cfg[:vm_box]}"
-  config.vm.network "public_network", bridge: "#{cfg[:network_switch]}"
+  if cfg[:provider] == "hyperv"
+    config.vm.network "public_network", bridge: "#{cfg[:network_switch]}"
+  end
 
   config.vm.provision "file", source: "#{cfg[:ssh_priv]}", destination: "/home/vagrant/.ssh/id_rsa"
   public_key = File.read("#{cfg[:ssh_public]}") 
@@ -73,7 +76,7 @@ Vagrant.configure(2) do |config|
     hostname = cfg[:vm_prefix] + "-" + machine[:hostname]
     config.vm.define "#{hostname}" do |m|
       m.vm.hostname = hostname
-      m.vm.provider "hyperv" do |v|
+      m.vm.provider cfg[:provider] do |v|
         v.vmname = cfg[:vm_prefix] + ": " + machine[:name]
         v.memory = machine[:memory]
         v.maxmemory = machine[:memory]

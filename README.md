@@ -3,8 +3,18 @@ Simple Vagrant setup to create multiple hyper-V VM`s for testing and developing 
 
 ## Requirements
 
+### Windows
+
 - Windows machine with Hyper-V [enabled](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
 - Latest [Vagrant](https://www.vagrantup.com/downloads.html)
+
+### Ubuntu
+
+- Ubuntu with [libvert](https://ubuntu.com/server/docs/virtualization-libvirt)
+- Latest [Vagrant](https://www.vagrantup.com/downloads.html)
+- Vagrant [libvert provider](https://github.com/vagrant-libvirt/vagrant-libvirt)
+
+*Other Linux distros should work but are untested.*
 
 ## Usage
 
@@ -16,14 +26,15 @@ There are 2 ways of configuration.
 
 ```Ruby
 cfg = {
+  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
   :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
   :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
   :vm_cpus => 2, # Number of CPU cores each VM should have when using the vm_count.
   :vm_memory => 2048, # Amount of memory each VM should have when using the vm_count.
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
-  :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs.
-  :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs.
-  :network_switch => "switchname"  # The network switch you want to use to connect the VMs to. THis must be created in Hyper-V manager before hand and needs to be an external switch.
+  :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs
+  :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs
+  :network_switch => "switchname"  # HYPER-V ONLY. The network switch you want to use to connect the VMs to. This must be created in Hyper-V manager before hand and needs to be an external switch.
 }
 ```
 
@@ -60,14 +71,16 @@ The following settings of the basic config will be used for both approaches desc
 
 ```Ruby
 cfg = {
+  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
   :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs.
   :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs.
-  :network_switch => "switchname"  # The network switch you want to use to connect the VMs to. THis must be created in Hyper-V manager before hand and needs to be an external switch.
+  :network_switch => "switchname"  # HYPER-V ONLY. The network switch you want to use to connect the VMs to. This must be created in Hyper-V manager before hand and needs to be an external switch.
 }
 ```
 
 ### VM Management
+
 You can use the normal [Vagrant commands](https://www.vagrantup.com/docs/cli) to manage the VM`s you create for the cluster. Few of the most common:
 
 - ```vagrant up ...``` to create a new set of VM`s
