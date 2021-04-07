@@ -10,11 +10,19 @@ Simple Vagrant setup to create multiple hyper-V VM`s for testing and developing 
 
 ### Ubuntu
 
-- Ubuntu with [libvert](https://ubuntu.com/server/docs/virtualization-libvirt)
+- Ubuntu with [libvirt](https://ubuntu.com/server/docs/virtualization-libvirt)
 - Latest [Vagrant](https://www.vagrantup.com/downloads.html)
-- Vagrant [libvert provider](https://github.com/vagrant-libvirt/vagrant-libvirt)
+- Vagrant [libvirt provider](https://github.com/vagrant-libvirt/vagrant-libvirt)
 
 *Other Linux distros should work but are untested.*
+
+### MacOS
+
+- MacOS with [libvirt](https://lunar.computer/posts/vagrant-libvirt-macos/)
+- Latest [Vagrant](https://www.vagrantup.com/downloads.html)
+- Vagrant [libvirt provider](https://lunar.computer/posts/vagrant-libvirt-macos/)
+
+*MacOS should work but is untested.*
 
 ## Usage
 
@@ -26,7 +34,7 @@ There are 2 ways of configuration.
 
 ```Ruby
 cfg = {
-  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
+  :provider => "hyperv", # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
   :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
   :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
   :vm_cpus => 2, # Number of CPU cores each VM should have when using the vm_count.

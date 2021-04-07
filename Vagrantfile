@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 cfg = {
-  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
+  :provider => "hyperv", # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
   :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
   :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
   :vm_cpus => 2, # Number of CPU cores each VM should have when using the vm_count.
