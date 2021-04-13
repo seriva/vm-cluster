@@ -34,15 +34,15 @@ There are 2 ways of configuration.
 
 ```Ruby
 cfg = {
-  :provider => "hyperv", # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
+  :provider => "hyperv", # Set the which vagrant provider we want to use. "hyperv" and "libvirt" supported
   :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
   :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
-  :vm_cpus => 2, # Number of CPU cores each VM should have when using the vm_count.
+  :vm_cpus => 2, # HYPER-V ONLY - Number of CPU cores each VM should have when using the vm_count.
   :vm_memory => 2048, # Amount of memory each VM should have when using the vm_count.
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
   :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs
   :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs
-  :network_switch => "switchname"  # HYPER-V ONLY. The network switch you want to use to connect the VMs to. This must be created in Hyper-V manager before hand and needs to be an external switch.
+  :network_switch => "switchname" # HYPER-V ONLY - The network switch you want to use to connect the VMs to. This must be created in Hyper-V manager before hand and needs to be an external switch.
 }
 ```
 
@@ -53,22 +53,22 @@ With the above configuration 4 VM`s will be created labeled ```prefix1``` ... ``
 ```ruby
 boxes = [
   {
-    :name => "Kubernetes Master", # Name the machine will have in Hyper-V manager.
+    :name => "Kubernetes Master", # Name of the machine.
     :hostname => "kmaster", # Hostname this VM will get on the network.
     :memory => 2048, # Ammount of memory this VM will have.
-    :cpus => 2 # Number of CPU cores this VM will have.
+    :cpus => 2 # HYPER-V ONLY - Number of CPU cores this VM will have.
   },
   {
-    :name => "Kubernetes Node 1", # Name the machine will have in Hyper-V manager.
+    :name => "Kubernetes Node 1", # Name of the machine.
     :hostname => "knode1", # Hostname this VM will get on the network.
     :memory => 2048, # Ammount of memory this VM will have.
-    :cpus => 2 # Number of CPU cores this VM will have.
+    :cpus => 2 # HYPER-V ONLY - Number of CPU cores this VM will have.
   },
   {
-    :name => "Kubernetes Node 2", # Name the machine will have in Hyper-V manager.
+    :name => "Kubernetes Node 2", # Name of the machine.
     :hostname => "knode2", # Hostname this VM will get on the network.
     :memory => 2048, # Ammount of memory this VM will have.
-    :cpus => 2 # Number of CPU cores this VM will have.
+    :cpus => 2 # HYPER-V ONLY - Number of CPU cores this VM will have.
   }
 ]
 ```
@@ -79,7 +79,7 @@ The following settings of the basic config will be used for both approaches desc
 
 ```Ruby
 cfg = {
-  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvert" supported
+  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvirt" supported
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
   :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs.
   :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs.
