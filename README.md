@@ -79,7 +79,7 @@ The following settings of the basic config will be used for both approaches desc
 
 ```Ruby
 cfg = {
-  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" and "libvirt" supported
+  :provider => "hyperv" # Set the which vagrant provider we want to use. "hyperv" on Windows and "libvirt" on Linux and MacOS.
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
   :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs.
   :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs.
