@@ -79,7 +79,7 @@ Vagrant.configure(2) do |config|
       m.vm.provider cfg[:provider] do |v|
         v.memory = machine[:memory]
         if cfg[:provider] == "libvirt"
-          v.title = machine[:name]
+          v.title = cfg[:vm_prefix] + ": " + machine[:name]
         end
         if cfg[:provider] == "hyperv"
           v.cpus = machine[:cpus]
