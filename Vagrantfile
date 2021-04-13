@@ -3,13 +3,14 @@
 
 cfg = {
   :provider => "hyperv", # Set the which vagrant provider we want to use. "hyperv" on Windows and "libvirt" on Linux and MacOS.
+  :group => "group1", # Group included in a VM name. 
   :vm_count => 4, # If set to 0 a set of VM`s will be created with the definitions in boxes below. Of > 0 then the general cfg (vm_cpus, vm_memory) is used.
-  :vm_prefix => "prefix", # Prefix that will be used for creating the clusters.
-  :vm_cpus => 2, # HYPER-V ONLY - Number of CPU cores each VM should have when using the vm_count.
+  :vm_prefix => "vm", # Prefix that will be used for the vm name and hostname when VM`s will notbe created with the definitions in boxes below.
+  :vm_cpus => 2, #Number of CPU cores each VM should have when using the vm_count.
   :vm_memory => 2048, # Amount of memory each VM should have when using the vm_count.
   :vm_box => "generic/ubuntu1804",  #"generic/rhel7", "centos/7", # Image to use for the VM`s.
-  :ssh_priv => "/path/to/ssh/private/key", # Path of the private SSH key that you want to use to connect to the VMs
-  :ssh_public => "/path/to/ssh/public/key", # Path of the public SSH key that you want to use to connect to the VMs
+  :ssh_priv => "/path/to/ssh/private/key",  # Path of the private SSH key that you want to use to connect to the VMs
+  :ssh_public => "/path/to/ssh/public/key",  # Path of the public SSH key that you want to use to connect to the VMs
   :network_switch => "switchname"  # HYPER-V ONLY - The network switch you want to use to connect the VMs to. This must be created in Hyper-V manager before hand and needs to be an external switch.
 }
 
@@ -19,19 +20,19 @@ boxes = [
     :name => "Kubernetes Master", 
     :hostname => "kmaster",
     :memory => 2048,
-    :cpus => 2, # HYPER-V ONLY
+    :cpus => 2
   },
   {
     :name => "Kubernetes Node 1", 
     :hostname => "knode1",
     :memory => 2048,
-    :cpus => 2 # HYPER-V ONLY
+    :cpus => 2
   }, 
   {
     :name => "Kubernetes Node 2", 
     :hostname => "knode2",
     :memory => 2048,
-    :cpus => 2 # HYPER-V ONLY
+    :cpus => 2
   }
 ]
   
@@ -42,7 +43,7 @@ if cfg[:vm_count] > 0
       :name => cfg[:vm_prefix] + '-' + i.to_s, 
       :hostname => cfg[:vm_prefix] + '-' + i.to_s,
       :memory => cfg[:vm_memory],
-      :cpus => cfg[:cpus], 
+      :cpus => cfg[:vm_cpus], 
     } 
     boxes << m
   end
@@ -77,13 +78,13 @@ Vagrant.configure(2) do |config|
     config.vm.define "#{hostname}" do |m|
       m.vm.hostname = hostname
       m.vm.provider cfg[:provider] do |v|
+        v.cpus = machine[:cpus]
         v.memory = machine[:memory]
         if cfg[:provider] == "libvirt"
-          v.title = cfg[:vm_prefix] + ": " + machine[:name]
+          v.title = cfg[:group] + ": " + machine[:name]
         end
         if cfg[:provider] == "hyperv"
-          v.cpus = machine[:cpus]
-          v.vmname = cfg[:vm_prefix] + ": " + machine[:name]
+          v.vmname = cfg[:group] + ": " + machine[:name]
           v.linked_clone = true
           v.maxmemory = machine[:memory]
           v.mac = "525400" + Array.new(6){[*"A".."F", *"0".."9"].sample}.join
